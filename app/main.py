@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-# from app.api.router import api_router
+from app.api.router import api_router
 from app.core.config import settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import setup_logging
@@ -47,9 +47,9 @@ def create_app() -> FastAPI:
     register_exception_handlers(app)
 
     # Mount API routes under /api/v1
-    # app.include_router(api_router, prefix=settings.API_V1_PREFIX)
+    app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
-    # Health check (outside versioned API)
+    # Health check
     @app.get("/health", tags=["Health"])
     async def health_check():
         """Health check endpoint."""
