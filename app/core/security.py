@@ -4,7 +4,7 @@ Security utilities.
 JWT token creation/verification and password hashing.
 """
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, UTC
 from uuid import UUID
 
 from jose import JWTError, jwt
