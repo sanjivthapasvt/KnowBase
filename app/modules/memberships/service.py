@@ -1,6 +1,7 @@
 from uuid import UUID
 
-from app.core.exceptions import ConflictException, ForbiddenException, NotFoundException
+from app.core.exceptions import (ConflictException, ForbiddenException,
+                                 NotFoundException)
 from app.modules.memberships.models import Membership, RoleEnum
 from app.modules.memberships.repository import MembershipRepository
 from app.modules.memberships.schemas import MembershipCreate, MembershipUpdate
