@@ -6,7 +6,8 @@ from app.core.exceptions import NotFoundException
 from app.modules.memberships.models import Membership, RoleEnum
 from app.modules.organizations.models import Organization
 from app.modules.organizations.repository import OrganizationRepository
-from app.modules.organizations.schemas import OrganizationCreate, OrganizationUpdate
+from app.modules.organizations.schemas import (OrganizationCreate,
+                                               OrganizationUpdate)
 from app.modules.users.models import User
 
 
@@ -34,7 +35,9 @@ class OrganizationService:
             counter += 1
         return f"{base_slug}-{counter}"
 
-    async def create_organization(self, data: OrganizationCreate, creator: User) -> Organization:
+    async def create_organization(
+        self, data: OrganizationCreate, creator: User
+    ) -> Organization:
         """Create a new organization and assign the creator as owner."""
         slug = await self._generate_unique_slug(data.name)
 
@@ -63,7 +66,9 @@ class OrganizationService:
             raise NotFoundException("Organization not found")
         return org
 
-    async def update_organization(self, org_id: UUID, data: OrganizationUpdate) -> Organization:
+    async def update_organization(
+        self, org_id: UUID, data: OrganizationUpdate
+    ) -> Organization:
         """Update an organization.
 
         Raises:

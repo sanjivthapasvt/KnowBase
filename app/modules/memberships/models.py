@@ -30,7 +30,9 @@ class Membership(BaseDBModel, table=True):
     __tablename__ = "memberships"
 
     user_id: UUID = Field(foreign_key="users.id", nullable=False, index=True)
-    organization_id: UUID = Field(foreign_key="organizations.id", nullable=False, index=True)
+    organization_id: UUID = Field(
+        foreign_key="organizations.id", nullable=False, index=True
+    )
     role: RoleEnum = Field(
         sa_column=Column(Enum(RoleEnum), nullable=False, default=RoleEnum.member)
     )

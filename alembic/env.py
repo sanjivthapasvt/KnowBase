@@ -8,13 +8,12 @@ It imports all SQLModel models so that autogenerate can detect schema changes.
 import asyncio
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlmodel import SQLModel
 
+from alembic import context
 from app.core.config import settings
-
 # Import all models so Alembic can detect them
 from app.modules.audit_logs.models import AuditLog  # noqa: F401
 from app.modules.document_versions.models import DocumentVersion  # noqa: F401

@@ -7,7 +7,8 @@ from app.core.database import get_db
 from app.dependencies import require_role
 from app.modules.memberships.models import RoleEnum
 from app.modules.memberships.repository import MembershipRepository
-from app.modules.memberships.schemas import MembershipCreate, MembershipRead, MembershipUpdate
+from app.modules.memberships.schemas import (MembershipCreate, MembershipRead,
+                                             MembershipUpdate)
 from app.modules.memberships.service import MembershipService
 
 router = APIRouter(prefix="/organizations/{org_id}/members", tags=["Memberships"])
@@ -20,7 +21,9 @@ def _get_service(db: AsyncSession = Depends(get_db)) -> MembershipService:
 @router.get("", response_model=list[MembershipRead])
 async def list_members(
     org_id: UUID,
-    _role: None = Depends(require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)),
+    _role: None = Depends(
+        require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)
+    ),
     service: MembershipService = Depends(_get_service),
 ):
     """List all members of an organization."""

@@ -11,6 +11,7 @@ from fastapi import FastAPI
 
 from app.api.router import api_router
 from app.core.config import settings
+from app.core.database import create_tables
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import setup_logging
 from app.core.redis import close_redis, init_redis
@@ -23,14 +24,14 @@ async def lifespan(app: FastAPI):
     # Startup
     setup_logging()
     await init_redis()
+    await create_tables()
     yield
     # Shutdown
     await close_redis()
 
 
 def create_app() -> FastAPI:
-    """Application factory.
-    """
+    """Application factory."""
     app = FastAPI(
         title=settings.APP_NAME,
         description="Multi-tenant Team Knowledge Base SaaS API",

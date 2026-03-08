@@ -5,7 +5,7 @@ from app.models.base import BaseDBModel
 
 class User(BaseDBModel, table=True):
     """
-        Application user.
+    Application user.
     """
 
     __tablename__ = "users"
