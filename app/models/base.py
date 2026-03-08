@@ -5,11 +5,11 @@ All domain models should inherit from this base to get consistent
 id, created_at, and updated_at fields.
 """
 
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
-from sqlmodel import Field, SQLModel
 from sqlalchemy import DateTime
+from sqlmodel import Field, SQLModel
 
 
 class BaseDBModel(SQLModel):

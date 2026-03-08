@@ -5,7 +5,9 @@ Async database engine and session management.
 
 from collections.abc import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
+                                    create_async_engine)
+from sqlmodel import SQLModel
 
 from app.core.config import settings
 
@@ -23,6 +25,12 @@ async_session_factory = async_sessionmaker(
     class_=AsyncSession,
     expire_on_commit=False,
 )
+
+
+async def create_tables() -> None:
+    """Create all tables in the database."""
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
