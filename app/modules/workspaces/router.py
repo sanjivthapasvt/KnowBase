@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination.cursor import CursorPage, CursorParams
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -18,16 +19,17 @@ router = APIRouter(
 
 
 def _get_service(db: AsyncSession = Depends(get_db)) -> WorkspaceService:
-    return WorkspaceService(WorkspaceRepository(db))
+    return WorkspaceService(WorkspaceRepository(db), db)
 
 
-@router.get("", response_model=list[WorkspaceRead])
+@router.get("", response_model=CursorPage[WorkspaceRead])
 async def list_workspaces(
+    params: CursorParams = Depends(),
     org_id: UUID = Depends(get_current_org_id),
     service: WorkspaceService = Depends(_get_service),
 ):
     """List all workspaces in the organization."""
-    return await service.list_workspaces(org_id)
+    return await service.list_workspaces(org_id, params)
 
 
 @router.post("", response_model=WorkspaceRead, status_code=201)

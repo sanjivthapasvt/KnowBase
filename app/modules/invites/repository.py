@@ -48,6 +48,14 @@ class InviteRepository:
         )
         return list(result.scalars().all())
 
+    def get_org_invites_query(self, org_id: UUID):
+        """Build a query for organization invites (for pagination)."""
+        return (
+            select(Invite)
+            .where(Invite.organization_id == org_id)
+            .order_by(Invite.created_at.desc(), Invite.id.desc())
+        )
+
     async def create(self, invite: Invite) -> Invite:
         """Persist a new invite."""
         self.db.add(invite)

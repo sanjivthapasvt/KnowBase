@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination.cursor import CursorPage, CursorParams
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -30,13 +31,14 @@ async def create_organization(
     return await service.create_organization(data, current_user)
 
 
-@router.get("", response_model=list[OrganizationRead])
+@router.get("", response_model=CursorPage[OrganizationRead])
 async def list_my_organizations(
+    params: CursorParams = Depends(),
     current_user: User = Depends(get_current_user),
     service: OrganizationService = Depends(_get_service),
 ):
     """List all organizations the current user belongs to."""
-    return await service.list_user_organizations(current_user.id)
+    return await service.list_user_organizations(current_user.id, params)
 
 
 @router.get("/{org_id}", response_model=OrganizationRead)

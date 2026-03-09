@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query
+from fastapi_pagination.cursor import CursorPage, CursorParams
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -17,20 +18,19 @@ router = APIRouter(
 
 
 def _get_service(db: AsyncSession = Depends(get_db)) -> AuditLogService:
-    return AuditLogService(AuditLogRepository(db))
+    return AuditLogService(AuditLogRepository(db), db)
 
 
-@router.get("", response_model=list[AuditLogRead])
+@router.get("", response_model=CursorPage[AuditLogRead])
 async def list_audit_logs(
+    params: CursorParams = Depends(),
     org_id: UUID = Depends(get_current_org_id),
     action: str | None = Query(None, description="Filter by action"),
     resource_type: str | None = Query(None, description="Filter by resource type"),
-    skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=500),
     _role: None = Depends(require_role(RoleEnum.owner, RoleEnum.admin)),
     service: AuditLogService = Depends(_get_service),
 ):
     """List audit logs for the organization (owner/admin only)."""
     return await service.list_logs(
-        org_id, skip=skip, limit=limit, action=action, resource_type=resource_type
+        org_id, params, action=action, resource_type=resource_type
     )

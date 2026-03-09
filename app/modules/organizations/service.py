@@ -1,5 +1,7 @@
 from uuid import UUID
 
+from fastapi_pagination.cursor import CursorParams
+from fastapi_pagination.ext.sqlalchemy import paginate
 from slugify import slugify
 
 from app.core.exceptions import NotFoundException
@@ -84,6 +86,7 @@ class OrganizationService:
 
         return await self.repo.update(org)
 
-    async def list_user_organizations(self, user_id: UUID) -> list[Organization]:
-        """List all organizations a user belongs to."""
-        return await self.repo.list_for_user(user_id)
+    async def list_user_organizations(self, user_id: UUID, params: CursorParams):
+        """List all organizations a user belongs to (cursor-paginated)."""
+        query = self.repo.get_user_organizations_query(user_id)
+        return await paginate(self.db, query, params)

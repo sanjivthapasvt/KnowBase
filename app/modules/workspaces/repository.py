@@ -54,6 +54,14 @@ class WorkspaceRepository:
         )
         return list(result.scalars().all())
 
+    def get_org_workspaces_query(self, org_id: UUID):
+        """Build a query for organization workspaces (for pagination)."""
+        return (
+            select(Workspace)
+            .where(Workspace.organization_id == org_id)
+            .order_by(Workspace.created_at.desc(), Workspace.id.desc())
+        )
+
     async def create(self, workspace: Workspace) -> Workspace:
         """Persist a new workspace."""
         self.db.add(workspace)

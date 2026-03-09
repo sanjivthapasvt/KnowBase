@@ -57,3 +57,14 @@ class OrganizationRepository:
             .where(Membership.user_id == user_id)
         )
         return list(result.scalars().all())
+
+    def get_user_organizations_query(self, user_id: UUID):
+        """Build a query for organizations a user belongs to (for pagination)."""
+        from app.modules.memberships.models import Membership
+
+        return (
+            select(Organization)
+            .join(Membership, Membership.organization_id == Organization.id)
+            .where(Membership.user_id == user_id)
+            .order_by(Organization.created_at.desc(), Organization.id.desc())
+        )

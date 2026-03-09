@@ -49,6 +49,15 @@ class DocumentRepository:
         )
         return list(result.scalars().all())
 
+    def get_org_documents_query(
+        self, org_id: UUID, workspace_id: UUID | None = None
+    ):
+        """Build a query for organization documents (for pagination)."""
+        query = select(Document).where(Document.organization_id == org_id)
+        if workspace_id:
+            query = query.where(Document.workspace_id == workspace_id)
+        return query.order_by(Document.created_at.desc(), Document.id.desc())
+
     async def create(self, document: Document) -> Document:
         """Persist a new document."""
         self.db.add(document)

@@ -1,6 +1,9 @@
 import secrets
 from uuid import UUID
 
+from fastapi_pagination.cursor import CursorParams
+from fastapi_pagination.ext.sqlalchemy import paginate
+
 from app.core.exceptions import (BadRequestException, ConflictException,
                                  NotFoundException)
 from app.modules.invites.models import Invite, InviteStatus
@@ -19,10 +22,12 @@ class InviteService:
         invite_repo: InviteRepository,
         user_repo: UserRepository,
         membership_repo: MembershipRepository,
+        db,
     ):
         self.invite_repo = invite_repo
         self.user_repo = user_repo
         self.membership_repo = membership_repo
+        self.db = db
 
     async def create_invite(
         self, org_id: UUID, inviter_id: UUID, data: InviteCreate
@@ -111,8 +116,7 @@ class InviteService:
         invite.status = InviteStatus.revoked
         return await self.invite_repo.update(invite)
 
-    async def list_invites(
-        self, org_id: UUID, *, skip: int = 0, limit: int = 100
-    ) -> list[Invite]:
-        """List all invites for an organization."""
-        return await self.invite_repo.list_by_org(org_id, skip=skip, limit=limit)
+    async def list_invites(self, org_id: UUID, params: CursorParams):
+        """List all invites for an organization (cursor-paginated)."""
+        query = self.invite_repo.get_org_invites_query(org_id)
+        return await paginate(self.db, query, params)

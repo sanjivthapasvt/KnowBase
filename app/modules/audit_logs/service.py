@@ -1,5 +1,8 @@
 from uuid import UUID
 
+from fastapi_pagination.cursor import CursorParams
+from fastapi_pagination.ext.sqlalchemy import paginate
+
 from app.modules.audit_logs.models import AuditLog
 from app.modules.audit_logs.repository import AuditLogRepository
 from app.modules.audit_logs.schemas import AuditLogCreate
@@ -11,8 +14,9 @@ class AuditLogService:
     Audit logs are append-only — they cannot be updated or deleted.
     """
 
-    def __init__(self, repo: AuditLogRepository):
+    def __init__(self, repo: AuditLogRepository, db):
         self.repo = repo
+        self.db = db
 
     async def log_action(
         self, org_id: UUID, user_id: UUID, data: AuditLogCreate
@@ -32,16 +36,16 @@ class AuditLogService:
     async def list_logs(
         self,
         org_id: UUID,
+        params: CursorParams,
         *,
-        skip: int = 0,
-        limit: int = 100,
         action: str | None = None,
         resource_type: str | None = None,
-    ) -> list[AuditLog]:
-        """List audit logs for an organization with optional filters."""
-        return await self.repo.list_by_org(
-            org_id, skip=skip, limit=limit, action=action, resource_type=resource_type
+    ):
+        """List audit logs for an organization with optional filters (cursor-paginated)."""
+        query = self.repo.get_org_logs_query(
+            org_id, action=action, resource_type=resource_type
         )
+        return await paginate(self.db, query, params)
 
     async def get_resource_history(
         self, resource_type: str, resource_id: UUID, org_id: UUID

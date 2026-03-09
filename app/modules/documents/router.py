@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query
+from fastapi_pagination.cursor import CursorPage, CursorParams
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -19,19 +20,18 @@ router = APIRouter(
 
 
 def _get_service(db: AsyncSession = Depends(get_db)) -> DocumentService:
-    return DocumentService(DocumentRepository(db))
+    return DocumentService(DocumentRepository(db), db)
 
 
-@router.get("", response_model=list[DocumentRead])
+@router.get("", response_model=CursorPage[DocumentRead])
 async def list_documents(
+    params: CursorParams = Depends(),
     org_id: UUID = Depends(get_current_org_id),
     workspace_id: UUID | None = Query(None, description="Filter by workspace"),
-    skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=500),
     service: DocumentService = Depends(_get_service),
 ):
     """List documents in the organization, optionally filtered by workspace."""
-    return await service.list_documents(org_id, workspace_id, skip=skip, limit=limit)
+    return await service.list_documents(org_id, workspace_id, params=params)
 
 
 @router.post("", response_model=DocumentRead, status_code=201)
