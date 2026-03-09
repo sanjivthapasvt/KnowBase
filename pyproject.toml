@@ -29,6 +29,7 @@ dependencies = [
     "python-slugify>=8.0.0",
     "black>=26.3.0",
     "isort>=8.0.1",
+    "fastapi-pagination>=0.15.10",
 ]
 
 [project.optional-dependencies]
