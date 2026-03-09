@@ -8,6 +8,7 @@ middleware, exception handlers, and lifecycle events.
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi_pagination import add_pagination
 
 from app.api.router import api_router
 from app.core.config import settings
@@ -55,6 +56,8 @@ def create_app() -> FastAPI:
     async def health_check():
         """Health check endpoint."""
         return {"status": "healthy", "app": settings.APP_NAME}
+
+    add_pagination(app)
 
     return app
 
