@@ -1,5 +1,8 @@
 from uuid import UUID
 
+from fastapi_pagination.cursor import CursorParams
+from fastapi_pagination.ext.sqlalchemy import paginate
+
 from app.core.exceptions import (ConflictException, ForbiddenException,
                                  NotFoundException)
 from app.modules.memberships.models import Membership, RoleEnum
@@ -10,8 +13,9 @@ from app.modules.memberships.schemas import MembershipCreate, MembershipUpdate
 class MembershipService:
     """Business logic for membership / RBAC operations."""
 
-    def __init__(self, repo: MembershipRepository):
+    def __init__(self, repo: MembershipRepository, db):
         self.repo = repo
+        self.db = db
 
     async def add_member(self, org_id: UUID, data: MembershipCreate) -> Membership:
         """Add a user to an organization with a role.
@@ -72,6 +76,7 @@ class MembershipService:
 
         await self.repo.delete(membership)
 
-    async def list_members(self, org_id: UUID) -> list[Membership]:
-        """List all members of an organization."""
-        return await self.repo.list_by_org(org_id)
+    async def list_members(self, org_id: UUID, params: CursorParams):
+        """List all members of an organization (cursor-paginated)."""
+        query = self.repo.get_org_members_query(org_id)
+        return await paginate(self.db, query, params)

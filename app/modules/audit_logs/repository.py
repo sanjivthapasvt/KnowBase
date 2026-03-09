@@ -40,6 +40,22 @@ class AuditLogRepository:
         result = await self.db.execute(query)
         return list(result.scalars().all())
 
+    def get_org_logs_query(
+        self,
+        org_id: UUID,
+        action: str | None = None,
+        resource_type: str | None = None,
+    ):
+        """Build a query for organization audit logs (for pagination)."""
+        query = select(AuditLog).where(AuditLog.organization_id == org_id)
+
+        if action:
+            query = query.where(AuditLog.action == action)
+        if resource_type:
+            query = query.where(AuditLog.resource_type == resource_type)
+
+        return query.order_by(AuditLog.created_at.desc(), AuditLog.id.desc())
+
     async def list_by_resource(
         self, resource_type: str, resource_id: UUID, org_id: UUID
     ) -> list[AuditLog]:

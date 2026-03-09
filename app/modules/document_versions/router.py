@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination.cursor import CursorPage, CursorParams
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -19,17 +20,18 @@ router = APIRouter(
 
 
 def _get_service(db: AsyncSession = Depends(get_db)) -> DocumentVersionService:
-    return DocumentVersionService(DocumentVersionRepository(db), DocumentRepository(db))
+    return DocumentVersionService(DocumentVersionRepository(db), DocumentRepository(db), db)
 
 
-@router.get("", response_model=list[DocumentVersionRead])
+@router.get("", response_model=CursorPage[DocumentVersionRead])
 async def list_versions(
     document_id: UUID,
+    params: CursorParams = Depends(),
     org_id: UUID = Depends(get_current_org_id),
     service: DocumentVersionService = Depends(_get_service),
 ):
     """List all versions of a document."""
-    return await service.list_versions(document_id, org_id)
+    return await service.list_versions(document_id, org_id, params)
 
 
 @router.post("", response_model=DocumentVersionRead, status_code=201)

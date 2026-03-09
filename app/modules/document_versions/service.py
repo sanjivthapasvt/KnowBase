@@ -1,5 +1,8 @@
 from uuid import UUID
 
+from fastapi_pagination.cursor import CursorParams
+from fastapi_pagination.ext.sqlalchemy import paginate
+
 from app.core.exceptions import NotFoundException
 from app.modules.document_versions.models import DocumentVersion
 from app.modules.document_versions.repository import DocumentVersionRepository
@@ -11,10 +14,11 @@ class DocumentVersionService:
     """Business logic for document version operations."""
 
     def __init__(
-        self, repo: DocumentVersionRepository, document_repo: DocumentRepository
+        self, repo: DocumentVersionRepository, document_repo: DocumentRepository, db
     ):
         self.repo = repo
         self.document_repo = document_repo
+        self.db = db
 
     async def create_version(
         self,
@@ -63,7 +67,8 @@ class DocumentVersionService:
         return version
 
     async def list_versions(
-        self, document_id: UUID, org_id: UUID
-    ) -> list[DocumentVersion]:
-        """List all versions of a document."""
-        return await self.repo.list_by_document(document_id, org_id)
+        self, document_id: UUID, org_id: UUID, params: CursorParams
+    ):
+        """List all versions of a document (cursor-paginated)."""
+        query = self.repo.get_document_versions_query(document_id, org_id)
+        return await paginate(self.db, query, params)

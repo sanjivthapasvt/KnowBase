@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination.cursor import CursorPage, CursorParams
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -15,19 +16,20 @@ router = APIRouter(prefix="/organizations/{org_id}/members", tags=["Memberships"
 
 
 def _get_service(db: AsyncSession = Depends(get_db)) -> MembershipService:
-    return MembershipService(MembershipRepository(db))
+    return MembershipService(MembershipRepository(db), db)
 
 
-@router.get("", response_model=list[MembershipRead])
+@router.get("", response_model=CursorPage[MembershipRead])
 async def list_members(
     org_id: UUID,
+    params: CursorParams = Depends(),
     _role: None = Depends(
         require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)
     ),
     service: MembershipService = Depends(_get_service),
 ):
     """List all members of an organization."""
-    return await service.list_members(org_id)
+    return await service.list_members(org_id, params)
 
 
 @router.post("", response_model=MembershipRead, status_code=201)

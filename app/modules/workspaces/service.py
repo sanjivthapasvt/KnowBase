@@ -1,5 +1,7 @@
 from uuid import UUID
 
+from fastapi_pagination.cursor import CursorParams
+from fastapi_pagination.ext.sqlalchemy import paginate
 from slugify import slugify
 
 from app.core.exceptions import NotFoundException
@@ -11,8 +13,9 @@ from app.modules.workspaces.schemas import WorkspaceCreate, WorkspaceUpdate
 class WorkspaceService:
     """Business logic for workspace operations."""
 
-    def __init__(self, repo: WorkspaceRepository):
+    def __init__(self, repo: WorkspaceRepository, db):
         self.repo = repo
+        self.db = db
 
     async def _generate_unique_slug(self, name: str, org_id: UUID) -> str:
         """Generate a unique slug within the organization.
@@ -82,8 +85,7 @@ class WorkspaceService:
             raise NotFoundException("Workspace not found")
         await self.repo.delete(workspace)
 
-    async def list_workspaces(
-        self, org_id: UUID, *, skip: int = 0, limit: int = 100
-    ) -> list[Workspace]:
-        """List all workspaces in an organization."""
-        return await self.repo.list_by_org(org_id, skip=skip, limit=limit)
+    async def list_workspaces(self, org_id: UUID, params: CursorParams):
+        """List all workspaces in an organization (cursor-paginated)."""
+        query = self.repo.get_org_workspaces_query(org_id)
+        return await paginate(self.db, query, params)

@@ -1,5 +1,8 @@
 from uuid import UUID
 
+from fastapi_pagination.cursor import CursorParams
+from fastapi_pagination.ext.sqlalchemy import paginate
+
 from app.core.exceptions import NotFoundException
 from app.modules.documents.models import Document
 from app.modules.documents.repository import DocumentRepository
@@ -9,8 +12,9 @@ from app.modules.documents.schemas import DocumentCreate, DocumentUpdate
 class DocumentService:
     """Business logic for document operations."""
 
-    def __init__(self, repo: DocumentRepository):
+    def __init__(self, repo: DocumentRepository, db):
         self.repo = repo
+        self.db = db
 
     async def create_document(
         self, org_id: UUID, user_id: UUID, data: DocumentCreate
@@ -70,12 +74,8 @@ class DocumentService:
         org_id: UUID,
         workspace_id: UUID | None = None,
         *,
-        skip: int = 0,
-        limit: int = 100,
-    ) -> list[Document]:
-        """List documents, optionally filtered by workspace."""
-        if workspace_id:
-            return await self.repo.list_by_workspace(
-                workspace_id, org_id, skip=skip, limit=limit
-            )
-        return await self.repo.list_by_org(org_id, skip=skip, limit=limit)
+        params: CursorParams,
+    ):
+        """List documents, optionally filtered by workspace (cursor-paginated)."""
+        query = self.repo.get_org_documents_query(org_id, workspace_id)
+        return await paginate(self.db, query, params)

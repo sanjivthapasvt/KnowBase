@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination.cursor import CursorPage, CursorParams
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -22,20 +23,22 @@ def _get_service(db: AsyncSession = Depends(get_db)) -> InviteService:
         InviteRepository(db),
         UserRepository(db),
         MembershipRepository(db),
+        db,
     )
 
 
 @router.get(
     "/organizations/{org_id}/invites",
-    response_model=list[InviteRead],
+    response_model=CursorPage[InviteRead],
 )
 async def list_invites(
+    params: CursorParams = Depends(),
     org_id: UUID = Depends(get_current_org_id),
     _role: None = Depends(require_role(RoleEnum.owner, RoleEnum.admin)),
     service: InviteService = Depends(_get_service),
 ):
     """List all invites for the organization (owner/admin only)."""
-    return await service.list_invites(org_id)
+    return await service.list_invites(org_id, params)
 
 
 @router.post(

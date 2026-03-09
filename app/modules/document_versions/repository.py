@@ -36,6 +36,17 @@ class DocumentVersionRepository:
         )
         return list(result.scalars().all())
 
+    def get_document_versions_query(self, document_id: UUID, org_id: UUID):
+        """Build a query for document versions (for pagination)."""
+        return (
+            select(DocumentVersion)
+            .where(
+                DocumentVersion.document_id == document_id,
+                DocumentVersion.organization_id == org_id,
+            )
+            .order_by(DocumentVersion.version_number.desc(), DocumentVersion.id.desc())
+        )
+
     async def get_latest_version_number(self, document_id: UUID) -> int:
         """Get the latest version number for a document."""
         result = await self.db.execute(
