@@ -1,13 +1,14 @@
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, StringConstraints
 
 
 class DocumentVersionCreate(BaseModel):
     """Schema for creating a document version (internal use)."""
 
-    title: str
+    title: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500)]
     content: str
 
 
