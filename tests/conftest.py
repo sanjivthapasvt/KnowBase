@@ -20,7 +20,7 @@ from app.core.security import create_access_token, hash_password
 from app.main import create_app
 from app.modules.users.models import User
 
-# In-memory SQLite for tests 
+# In-memory SQLite for tests
 TEST_DATABASE_URL = "sqlite+aiosqlite:///"
 
 

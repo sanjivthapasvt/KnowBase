@@ -49,9 +49,7 @@ class DocumentRepository:
         )
         return list(result.scalars().all())
 
-    def get_org_documents_query(
-        self, org_id: UUID, workspace_id: UUID | None = None
-    ):
+    def get_org_documents_query(self, org_id: UUID, workspace_id: UUID | None = None):
         """Build a query for organization documents (for pagination)."""
         query = select(Document).where(Document.organization_id == org_id)
         if workspace_id:

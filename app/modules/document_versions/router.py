@@ -20,7 +20,9 @@ router = APIRouter(
 
 
 def _get_service(db: AsyncSession = Depends(get_db)) -> DocumentVersionService:
-    return DocumentVersionService(DocumentVersionRepository(db), DocumentRepository(db), db)
+    return DocumentVersionService(
+        DocumentVersionRepository(db), DocumentRepository(db), db
+    )
 
 
 @router.get("", response_model=CursorPage[DocumentVersionRead])
