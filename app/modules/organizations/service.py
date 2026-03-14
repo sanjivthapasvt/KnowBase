@@ -8,8 +8,7 @@ from app.core.exceptions import NotFoundException
 from app.modules.memberships.models import Membership, RoleEnum
 from app.modules.organizations.models import Organization
 from app.modules.organizations.repository import OrganizationRepository
-from app.modules.organizations.schemas import (OrganizationCreate,
-                                               OrganizationUpdate)
+from app.modules.organizations.schemas import OrganizationCreate, OrganizationUpdate
 from app.modules.users.models import User
 
 

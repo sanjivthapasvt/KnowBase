@@ -2,8 +2,7 @@ from fastapi import APIRouter
 
 from app.modules.audit_logs.router import router as audit_logs_router
 from app.modules.auth.router import router as auth_router
-from app.modules.document_versions.router import \
-    router as document_versions_router
+from app.modules.document_versions.router import router as document_versions_router
 from app.modules.documents.router import router as documents_router
 from app.modules.invites.router import router as invites_router
 from app.modules.memberships.router import router as memberships_router

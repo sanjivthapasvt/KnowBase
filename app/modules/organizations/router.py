@@ -8,9 +8,11 @@ from app.core.database import get_db
 from app.dependencies import get_current_user, require_role
 from app.modules.memberships.models import RoleEnum
 from app.modules.organizations.repository import OrganizationRepository
-from app.modules.organizations.schemas import (OrganizationCreate,
-                                               OrganizationRead,
-                                               OrganizationUpdate)
+from app.modules.organizations.schemas import (
+    OrganizationCreate,
+    OrganizationRead,
+    OrganizationUpdate,
+)
 from app.modules.organizations.service import OrganizationService
 from app.modules.users.models import User
 
