@@ -1,17 +1,20 @@
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, StringConstraints
 
 
 class AuditLogCreate(BaseModel):
     """Schema for creating an audit log entry (internal use)."""
 
-    action: str
-    resource_type: str
+    action: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)]
+    resource_type: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=50)
+    ]
     resource_id: UUID
     details: str | None = None
-    ip_address: str | None = None
+    ip_address: Annotated[str, StringConstraints(max_length=45)] | None = None
 
 
 class AuditLogRead(BaseModel):

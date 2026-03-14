@@ -1,7 +1,8 @@
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, StringConstraints
 
 from app.modules.documents.models import DocumentStatus
 
@@ -9,7 +10,7 @@ from app.modules.documents.models import DocumentStatus
 class DocumentCreate(BaseModel):
     """Schema for creating a document."""
 
-    title: str
+    title: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500)]
     workspace_id: UUID
     status: DocumentStatus = DocumentStatus.draft
 
@@ -17,7 +18,9 @@ class DocumentCreate(BaseModel):
 class DocumentUpdate(BaseModel):
     """Schema for updating a document."""
 
-    title: str | None = None
+    title: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500)
+    ] | None = None
     status: DocumentStatus | None = None
 
 
