@@ -7,8 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.dependencies import get_current_org_id, get_current_user, require_role
 from app.modules.documents.repository import DocumentRepository
-from app.modules.documents.schemas import (DocumentCreate, DocumentRead,
-                                           DocumentUpdate)
+from app.modules.documents.schemas import DocumentCreate, DocumentRead, DocumentUpdate
 from app.modules.documents.service import DocumentService
 from app.modules.memberships.models import RoleEnum
 from app.modules.users.models import User

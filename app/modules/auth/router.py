@@ -5,8 +5,12 @@ Auth API router — registration, login, and token refresh endpoints.
 from fastapi import APIRouter, Depends
 
 from app.modules.auth.dependencies import get_auth_service
-from app.modules.auth.schemas import (LoginRequest, RefreshTokenRequest,
-                                      RegisterRequest, TokenResponse)
+from app.modules.auth.schemas import (
+    LoginRequest,
+    RefreshTokenRequest,
+    RegisterRequest,
+    TokenResponse,
+)
 from app.modules.auth.service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])

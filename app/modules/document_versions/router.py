@@ -7,8 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.dependencies import get_current_org_id, get_current_user
 from app.modules.document_versions.repository import DocumentVersionRepository
-from app.modules.document_versions.schemas import (DocumentVersionCreate,
-                                                   DocumentVersionRead)
+from app.modules.document_versions.schemas import DocumentVersionCreate, DocumentVersionRead
 from app.modules.document_versions.service import DocumentVersionService
 from app.modules.documents.repository import DocumentRepository
 from app.modules.users.models import User

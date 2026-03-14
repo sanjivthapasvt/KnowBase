@@ -6,12 +6,15 @@ from uuid import UUID
 
 from jose import JWTError
 
-from app.core.exceptions import (BadRequestException, ConflictException,
-                                 UnauthorizedException)
-from app.core.security import (create_access_token, create_refresh_token,
-                               decode_token, hash_password, verify_password)
-from app.modules.auth.schemas import (LoginRequest, RegisterRequest,
-                                      TokenResponse)
+from app.core.exceptions import BadRequestException, ConflictException, UnauthorizedException
+from app.core.security import (
+    create_access_token,
+    create_refresh_token,
+    decode_token,
+    hash_password,
+    verify_password,
+)
+from app.modules.auth.schemas import LoginRequest, RegisterRequest, TokenResponse
 from app.modules.users.models import User
 from app.modules.users.repository import UserRepository
 

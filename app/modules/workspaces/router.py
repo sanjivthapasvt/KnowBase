@@ -8,8 +8,7 @@ from app.core.database import get_db
 from app.dependencies import get_current_org_id, require_role
 from app.modules.memberships.models import RoleEnum
 from app.modules.workspaces.repository import WorkspaceRepository
-from app.modules.workspaces.schemas import (WorkspaceCreate, WorkspaceRead,
-                                            WorkspaceUpdate)
+from app.modules.workspaces.schemas import WorkspaceCreate, WorkspaceRead, WorkspaceUpdate
 from app.modules.workspaces.service import WorkspaceService
 
 router = APIRouter(
