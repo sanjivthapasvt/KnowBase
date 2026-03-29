@@ -31,6 +31,7 @@ dependencies = [
     "isort>=8.0.1",
     "fastapi-pagination>=0.15.10",
     "pytest>=9.0.2",
+    "sqlakeyset>=2.0.1762907931",
 ]
 
 [project.optional-dependencies]
