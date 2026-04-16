@@ -1,3 +1,4 @@
+// src/proxy.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
@@ -6,12 +7,19 @@ export function proxy(request: NextRequest) {
   const hasSession = request.cookies.get('kb_session');
 
   const isAuthPage = pathname.startsWith('/login') || pathname.startsWith('/register');
-  const isDashboardPage = pathname === '/' || pathname.startsWith('/organizations') || pathname.startsWith('/workspaces') || pathname.startsWith('/documents') || pathname.startsWith('/audit-logs');
+  const isDashboardPage =
+    pathname === '/' ||
+    pathname.startsWith('/organizations') ||
+    pathname.startsWith('/workspaces') ||
+    pathname.startsWith('/documents') ||
+    pathname.startsWith('/audit-logs');
 
+  // Redirect unauthenticated users away from dashboard pages
   if (isDashboardPage && !hasSession) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
+  // Redirect authenticated users away from auth pages
   if (isAuthPage && hasSession) {
     return NextResponse.redirect(new URL('/organizations', request.url));
   }
