@@ -1,5 +1,6 @@
 import OrgDetailClient from './OrgDetailClient';
 
-export default function OrgDetailPage({ params }: { params: { orgId: string } }) {
-  return <OrgDetailClient orgId={params.orgId} />;
+export default async function OrgDetailPage({ params }: { params: Promise<{ orgId: string }> }) {
+  const { orgId } = await params;
+  return <OrgDetailClient orgId={orgId} />;
 }

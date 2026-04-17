@@ -24,10 +24,13 @@ jobs:
     - name: Set up Python 3.14
       run: uv python install 3.14
     - name: Install dependencies
+      working-directory: ./backend
       run: uv sync --dev
     - name: Lint with ruff
-      uses: chartboost/ruff-action@v1
+      working-directory: ./backend
+      run: uv run ruff format --check . && uv run ruff check .
     - name: Test with pytest
+      working-directory: ./backend
       env:
         SECRET_KEY: ci-test-secret-key
       run: uv run pytest

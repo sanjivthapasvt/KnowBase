@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { useOrganization } from '@/features/organizations/hooks/useOrganization';
 import { useWorkspaceStore } from '@/store/workspace.store';

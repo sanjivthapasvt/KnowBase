@@ -1,5 +1,6 @@
 import MembersClient from './MembersClient';
 
-export default function MembersPage({ params }: { params: { workspaceId: string } }) {
-  return <MembersClient workspaceId={params.workspaceId} />;
+export default async function MembersPage({ params }: { params: Promise<{ workspaceId: string }> }) {
+  const { workspaceId } = await params;
+  return <MembersClient workspaceId={workspaceId} />;
 }

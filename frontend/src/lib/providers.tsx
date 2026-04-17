@@ -20,6 +20,7 @@ function AuthHydrator({ children }: { children: React.ReactNode }) {
   // restore session
   useEffect(() => {
     if (!isHydrated || !refreshToken) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsRestoring(true);
 
     apiClient
