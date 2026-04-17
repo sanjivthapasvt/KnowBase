@@ -1,5 +1,6 @@
 import DocumentDetailClient from './DocumentDetailClient';
 
-export default function DocumentDetailPage({ params }: { params: { documentId: string } }) {
-  return <DocumentDetailClient documentId={params.documentId} />;
+export default async function DocumentDetailPage({ params }: { params: Promise<{ documentId: string }> }) {
+  const { documentId } = await params;
+  return <DocumentDetailClient documentId={documentId} />;
 }

@@ -1,5 +1,6 @@
 import WorkspaceDetailClient from './WorkspaceDetailClient';
 
-export default function WorkspaceDetailPage({ params }: { params: { workspaceId: string } }) {
-  return <WorkspaceDetailClient workspaceId={params.workspaceId} />;
+export default async function WorkspaceDetailPage({ params }: { params: Promise<{ workspaceId: string }> }) {
+  const { workspaceId } = await params;
+  return <WorkspaceDetailClient workspaceId={workspaceId} />;
 }

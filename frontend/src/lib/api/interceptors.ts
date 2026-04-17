@@ -1,7 +1,6 @@
 // src/lib/api/interceptors.ts
 import type { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '@/store/auth.store';
-import { useRouter } from 'next/navigation';
 
 interface QueueItem {
   resolve: (token: string) => void;
@@ -23,10 +22,6 @@ function processQueue(error: unknown, token: string | null = null): void {
 }
 
 export function setupInterceptors(apiClient: AxiosInstance): void {
-  const { isHydrated } = useAuthStore();
-
-  if (!isHydrated) return;
-
   apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       const accessToken = useAuthStore.getState().accessToken;
@@ -74,8 +69,7 @@ export function setupInterceptors(apiClient: AxiosInstance): void {
         processQueue(refreshError);
         useAuthStore.getState().clearTokens();
         if (typeof window !== 'undefined') {
-          const router = useRouter();
-          router.push('/login');
+          window.location.href = '/login';
         }
         return Promise.reject(refreshError);
       } finally {

@@ -1,5 +1,6 @@
 import VersionsClient from './VersionsClient';
 
-export default function VersionsPage({ params }: { params: { documentId: string } }) {
-  return <VersionsClient documentId={params.documentId} />;
+export default async function VersionsPage({ params }: { params: Promise<{ documentId: string }> }) {
+  const { documentId } = await params;
+  return <VersionsClient documentId={documentId} />;
 }
