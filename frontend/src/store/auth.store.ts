@@ -43,7 +43,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (typeof window !== 'undefined') {
       const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
       set({
-        refreshToken,
+        refreshToken: refreshToken ?? null,
+        isAuthenticated: !!refreshToken,
         isHydrated: true,
       });
     }
