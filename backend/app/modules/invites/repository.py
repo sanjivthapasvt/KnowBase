@@ -22,9 +22,7 @@ class InviteRepository:
         result = await self.db.execute(select(Invite).where(Invite.token == token))
         return result.scalar_one_or_none()
 
-    async def get_pending_by_email_and_org(
-        self, email: str, org_id: UUID
-    ) -> Invite | None:
+    async def get_pending_by_email_and_org(self, email: str, org_id: UUID) -> Invite | None:
         """Check if a pending invite already exists for this email in the org."""
         result = await self.db.execute(
             select(Invite).where(
@@ -35,9 +33,7 @@ class InviteRepository:
         )
         return result.scalar_one_or_none()
 
-    async def list_by_org(
-        self, org_id: UUID, *, skip: int = 0, limit: int = 100
-    ) -> list[Invite]:
+    async def list_by_org(self, org_id: UUID, *, skip: int = 0, limit: int = 100) -> list[Invite]:
         """List invites for an organization."""
         result = await self.db.execute(
             select(Invite)

@@ -14,14 +14,10 @@ class MembershipRepository:
 
     async def get_by_id(self, membership_id: UUID) -> Membership | None:
         """Fetch a membership by ID."""
-        result = await self.db.execute(
-            select(Membership).where(Membership.id == membership_id)
-        )
+        result = await self.db.execute(select(Membership).where(Membership.id == membership_id))
         return result.scalar_one_or_none()
 
-    async def get_by_user_and_org(
-        self, user_id: UUID, org_id: UUID
-    ) -> Membership | None:
+    async def get_by_user_and_org(self, user_id: UUID, org_id: UUID) -> Membership | None:
         """Fetch a specific user's membership in an organization."""
         result = await self.db.execute(
             select(Membership).where(

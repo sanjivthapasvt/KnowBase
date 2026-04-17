@@ -23,6 +23,4 @@ class Workspace(BaseDBModel, table=True):
     name: str = Field(max_length=255, nullable=False)
     slug: str = Field(max_length=100, nullable=False, index=True)
     description: str | None = Field(default=None, max_length=1000)
-    organization_id: UUID = Field(
-        foreign_key="organizations.id", nullable=False, index=True
-    )
+    organization_id: UUID = Field(foreign_key="organizations.id", nullable=False, index=True)

@@ -26,8 +26,6 @@ class AuditLog(BaseDBModel, table=True):
     resource_type: str = Field(max_length=50, nullable=False, index=True)
     resource_id: UUID = Field(nullable=False)
     user_id: UUID = Field(foreign_key="users.id", nullable=False, index=True)
-    organization_id: UUID = Field(
-        foreign_key="organizations.id", nullable=False, index=True
-    )
+    organization_id: UUID = Field(foreign_key="organizations.id", nullable=False, index=True)
     details: str | None = Field(default=None, sa_column=Column(Text))
     ip_address: str | None = Field(default=None, max_length=45)

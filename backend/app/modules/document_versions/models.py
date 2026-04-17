@@ -27,6 +27,4 @@ class DocumentVersion(BaseDBModel, table=True):
     title: str = Field(max_length=500, nullable=False)
     content: str = Field(default="", sa_column=Column(Text))
     created_by: UUID = Field(foreign_key="users.id", nullable=False)
-    organization_id: UUID = Field(
-        foreign_key="organizations.id", nullable=False, index=True
-    )
+    organization_id: UUID = Field(foreign_key="organizations.id", nullable=False, index=True)

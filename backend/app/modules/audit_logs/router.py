@@ -31,6 +31,4 @@ async def list_audit_logs(
     service: AuditLogService = Depends(_get_service),
 ):
     """List audit logs for the organization (owner/admin only)."""
-    return await service.list_logs(
-        org_id, params, action=action, resource_type=resource_type
-    )
+    return await service.list_logs(org_id, params, action=action, resource_type=resource_type)

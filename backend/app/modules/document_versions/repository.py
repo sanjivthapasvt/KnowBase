@@ -22,9 +22,7 @@ class DocumentVersionRepository:
         )
         return result.scalar_one_or_none()
 
-    async def list_by_document(
-        self, document_id: UUID, org_id: UUID
-    ) -> list[DocumentVersion]:
+    async def list_by_document(self, document_id: UUID, org_id: UUID) -> list[DocumentVersion]:
         """List all versions of a document, ordered by version number desc."""
         result = await self.db.execute(
             select(DocumentVersion)

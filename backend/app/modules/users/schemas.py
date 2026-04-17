@@ -15,7 +15,9 @@ class UserCreate(BaseModel):
 
     email: EmailStr
     password: Annotated[str, StringConstraints(min_length=8, max_length=128)]
-    full_name: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=255)]
+    full_name: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=255)
+    ]
 
     @field_validator("password")
     @classmethod
@@ -35,9 +37,10 @@ class UserCreate(BaseModel):
 class UserUpdate(BaseModel):
     """Schema for updating a user profile."""
 
-    full_name: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=255)
-    ] | None = None
+    full_name: (
+        Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=255)]
+        | None
+    ) = None
     email: EmailStr | None = None
 
 

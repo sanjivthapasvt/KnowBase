@@ -13,9 +13,7 @@ from app.modules.documents.repository import DocumentRepository
 class DocumentVersionService:
     """Business logic for document version operations."""
 
-    def __init__(
-        self, repo: DocumentVersionRepository, document_repo: DocumentRepository, db
-    ):
+    def __init__(self, repo: DocumentVersionRepository, document_repo: DocumentRepository, db):
         self.repo = repo
         self.document_repo = document_repo
         self.db = db
@@ -66,9 +64,7 @@ class DocumentVersionService:
             raise NotFoundException("Document version not found")
         return version
 
-    async def list_versions(
-        self, document_id: UUID, org_id: UUID, params: CursorParams
-    ):
+    async def list_versions(self, document_id: UUID, org_id: UUID, params: CursorParams):
         """List all versions of a document (cursor-paginated)."""
         query = self.repo.get_document_versions_query(document_id, org_id)
         return await paginate(self.db, query, params)

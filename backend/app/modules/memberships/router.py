@@ -22,9 +22,7 @@ def _get_service(db: AsyncSession = Depends(get_db)) -> MembershipService:
 async def list_members(
     org_id: UUID,
     params: CursorParams = Depends(),
-    _role: None = Depends(
-        require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)
-    ),
+    _role: None = Depends(require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)),
     service: MembershipService = Depends(_get_service),
 ):
     """List all members of an organization."""

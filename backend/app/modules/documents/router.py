@@ -38,9 +38,7 @@ async def create_document(
     data: DocumentCreate,
     org_id: UUID = Depends(get_current_org_id),
     current_user: User = Depends(get_current_user),
-    _role: None = Depends(
-        require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)
-    ),
+    _role: None = Depends(require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)),
     service: DocumentService = Depends(_get_service),
 ):
     """Create a new document (owner/admin/member)."""
@@ -62,9 +60,7 @@ async def update_document(
     document_id: UUID,
     data: DocumentUpdate,
     org_id: UUID = Depends(get_current_org_id),
-    _role: None = Depends(
-        require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)
-    ),
+    _role: None = Depends(require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)),
     service: DocumentService = Depends(_get_service),
 ):
     """Update a document (owner/admin/member)."""

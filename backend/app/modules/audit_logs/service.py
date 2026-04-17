@@ -18,9 +18,7 @@ class AuditLogService:
         self.repo = repo
         self.db = db
 
-    async def log_action(
-        self, org_id: UUID, user_id: UUID, data: AuditLogCreate
-    ) -> AuditLog:
+    async def log_action(self, org_id: UUID, user_id: UUID, data: AuditLogCreate) -> AuditLog:
         """Record an audit log entry."""
         log = AuditLog(
             action=data.action,
@@ -42,9 +40,7 @@ class AuditLogService:
         resource_type: str | None = None,
     ):
         """List audit logs for an organization with optional filters (cursor-paginated)."""
-        query = self.repo.get_org_logs_query(
-            org_id, action=action, resource_type=resource_type
-        )
+        query = self.repo.get_org_logs_query(org_id, action=action, resource_type=resource_type)
         return await paginate(self.db, query, params)
 
     async def get_resource_history(

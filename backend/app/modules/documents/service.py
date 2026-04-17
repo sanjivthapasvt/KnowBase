@@ -16,9 +16,7 @@ class DocumentService:
         self.repo = repo
         self.db = db
 
-    async def create_document(
-        self, org_id: UUID, user_id: UUID, data: DocumentCreate
-    ) -> Document:
+    async def create_document(self, org_id: UUID, user_id: UUID, data: DocumentCreate) -> Document:
         """Create a new document in a workspace."""
         document = Document(
             title=data.title,
@@ -40,9 +38,7 @@ class DocumentService:
             raise NotFoundException("Document not found")
         return document
 
-    async def update_document(
-        self, doc_id: UUID, org_id: UUID, data: DocumentUpdate
-    ) -> Document:
+    async def update_document(self, doc_id: UUID, org_id: UUID, data: DocumentUpdate) -> Document:
         """Update a document.
 
         Raises:

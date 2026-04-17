@@ -47,10 +47,7 @@ class WorkspaceRepository:
     ) -> list[Workspace]:
         """List all workspaces for an organization."""
         result = await self.db.execute(
-            select(Workspace)
-            .where(Workspace.organization_id == org_id)
-            .offset(skip)
-            .limit(limit)
+            select(Workspace).where(Workspace.organization_id == org_id).offset(skip).limit(limit)
         )
         return list(result.scalars().all())
 

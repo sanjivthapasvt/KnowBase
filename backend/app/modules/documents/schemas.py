@@ -18,9 +18,10 @@ class DocumentCreate(BaseModel):
 class DocumentUpdate(BaseModel):
     """Schema for updating a document."""
 
-    title: Annotated[
-        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500)
-    ] | None = None
+    title: (
+        Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500)]
+        | None
+    ) = None
     status: DocumentStatus | None = None
 
 

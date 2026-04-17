@@ -27,29 +27,19 @@ def upgrade() -> None:
         sa.Column("updated_at", sa.DateTime(), nullable=False),
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
         sa.Column("slug", sqlmodel.sql.sqltypes.AutoString(length=100), nullable=False),
-        sa.Column(
-            "description", sqlmodel.sql.sqltypes.AutoString(length=1000), nullable=True
-        ),
+        sa.Column("description", sqlmodel.sql.sqltypes.AutoString(length=1000), nullable=True),
         sa.Column("is_active", sa.Boolean(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_organizations_slug"), "organizations", ["slug"], unique=True
-    )
+    op.create_index(op.f("ix_organizations_slug"), "organizations", ["slug"], unique=True)
     op.create_table(
         "users",
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=False),
         sa.Column("updated_at", sa.DateTime(), nullable=False),
-        sa.Column(
-            "email", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False
-        ),
-        sa.Column(
-            "hashed_password", sqlmodel.sql.sqltypes.AutoString(), nullable=False
-        ),
-        sa.Column(
-            "full_name", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False
-        ),
+        sa.Column("email", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
+        sa.Column("hashed_password", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column("full_name", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
         sa.Column("is_active", sa.Boolean(), nullable=False),
         sa.Column("is_superuser", sa.Boolean(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
@@ -60,19 +50,13 @@ def upgrade() -> None:
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=False),
         sa.Column("updated_at", sa.DateTime(), nullable=False),
-        sa.Column(
-            "action", sqlmodel.sql.sqltypes.AutoString(length=100), nullable=False
-        ),
-        sa.Column(
-            "resource_type", sqlmodel.sql.sqltypes.AutoString(length=50), nullable=False
-        ),
+        sa.Column("action", sqlmodel.sql.sqltypes.AutoString(length=100), nullable=False),
+        sa.Column("resource_type", sqlmodel.sql.sqltypes.AutoString(length=50), nullable=False),
         sa.Column("resource_id", sa.Uuid(), nullable=False),
         sa.Column("user_id", sa.Uuid(), nullable=False),
         sa.Column("organization_id", sa.Uuid(), nullable=False),
         sa.Column("details", sa.Text(), nullable=True),
-        sa.Column(
-            "ip_address", sqlmodel.sql.sqltypes.AutoString(length=45), nullable=True
-        ),
+        sa.Column("ip_address", sqlmodel.sql.sqltypes.AutoString(length=45), nullable=True),
         sa.ForeignKeyConstraint(
             ["organization_id"],
             ["organizations.id"],
@@ -83,9 +67,7 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_audit_logs_action"), "audit_logs", ["action"], unique=False
-    )
+    op.create_index(op.f("ix_audit_logs_action"), "audit_logs", ["action"], unique=False)
     op.create_index(
         op.f("ix_audit_logs_organization_id"),
         "audit_logs",
@@ -98,20 +80,14 @@ def upgrade() -> None:
         ["resource_type"],
         unique=False,
     )
-    op.create_index(
-        op.f("ix_audit_logs_user_id"), "audit_logs", ["user_id"], unique=False
-    )
+    op.create_index(op.f("ix_audit_logs_user_id"), "audit_logs", ["user_id"], unique=False)
     op.create_table(
         "invites",
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=False),
         sa.Column("updated_at", sa.DateTime(), nullable=False),
-        sa.Column(
-            "email", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False
-        ),
-        sa.Column(
-            "token", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False
-        ),
+        sa.Column("email", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
+        sa.Column("token", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
         sa.Column("role", sqlmodel.sql.sqltypes.AutoString(length=20), nullable=False),
         sa.Column(
             "status",
@@ -163,9 +139,7 @@ def upgrade() -> None:
         ["organization_id"],
         unique=False,
     )
-    op.create_index(
-        op.f("ix_memberships_user_id"), "memberships", ["user_id"], unique=False
-    )
+    op.create_index(op.f("ix_memberships_user_id"), "memberships", ["user_id"], unique=False)
     op.create_table(
         "workspaces",
         sa.Column("id", sa.Uuid(), nullable=False),
@@ -173,9 +147,7 @@ def upgrade() -> None:
         sa.Column("updated_at", sa.DateTime(), nullable=False),
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
         sa.Column("slug", sqlmodel.sql.sqltypes.AutoString(length=100), nullable=False),
-        sa.Column(
-            "description", sqlmodel.sql.sqltypes.AutoString(length=1000), nullable=True
-        ),
+        sa.Column("description", sqlmodel.sql.sqltypes.AutoString(length=1000), nullable=True),
         sa.Column("organization_id", sa.Uuid(), nullable=False),
         sa.ForeignKeyConstraint(
             ["organization_id"],
@@ -195,9 +167,7 @@ def upgrade() -> None:
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=False),
         sa.Column("updated_at", sa.DateTime(), nullable=False),
-        sa.Column(
-            "title", sqlmodel.sql.sqltypes.AutoString(length=500), nullable=False
-        ),
+        sa.Column("title", sqlmodel.sql.sqltypes.AutoString(length=500), nullable=False),
         sa.Column("content", sa.Text(), nullable=True),
         sa.Column(
             "status",
@@ -227,9 +197,7 @@ def upgrade() -> None:
         ["organization_id"],
         unique=False,
     )
-    op.create_index(
-        op.f("ix_documents_workspace_id"), "documents", ["workspace_id"], unique=False
-    )
+    op.create_index(op.f("ix_documents_workspace_id"), "documents", ["workspace_id"], unique=False)
     op.create_table(
         "document_versions",
         sa.Column("id", sa.Uuid(), nullable=False),
@@ -237,9 +205,7 @@ def upgrade() -> None:
         sa.Column("updated_at", sa.DateTime(), nullable=False),
         sa.Column("document_id", sa.Uuid(), nullable=False),
         sa.Column("version_number", sa.Integer(), nullable=False),
-        sa.Column(
-            "title", sqlmodel.sql.sqltypes.AutoString(length=500), nullable=False
-        ),
+        sa.Column("title", sqlmodel.sql.sqltypes.AutoString(length=500), nullable=False),
         sa.Column("content", sa.Text(), nullable=True),
         sa.Column("created_by", sa.Uuid(), nullable=False),
         sa.Column("organization_id", sa.Uuid(), nullable=False),
@@ -274,12 +240,8 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_index(
-        op.f("ix_document_versions_organization_id"), table_name="document_versions"
-    )
-    op.drop_index(
-        op.f("ix_document_versions_document_id"), table_name="document_versions"
-    )
+    op.drop_index(op.f("ix_document_versions_organization_id"), table_name="document_versions")
+    op.drop_index(op.f("ix_document_versions_document_id"), table_name="document_versions")
     op.drop_table("document_versions")
     op.drop_index(op.f("ix_documents_workspace_id"), table_name="documents")
     op.drop_index(op.f("ix_documents_organization_id"), table_name="documents")

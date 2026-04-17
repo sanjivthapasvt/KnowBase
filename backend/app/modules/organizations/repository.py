@@ -14,16 +14,12 @@ class OrganizationRepository:
 
     async def get_by_id(self, org_id: UUID) -> Organization | None:
         """Fetch an organization by ID."""
-        result = await self.db.execute(
-            select(Organization).where(Organization.id == org_id)
-        )
+        result = await self.db.execute(select(Organization).where(Organization.id == org_id))
         return result.scalar_one_or_none()
 
     async def get_by_slug(self, slug: str) -> Organization | None:
         """Fetch an organization by slug."""
-        result = await self.db.execute(
-            select(Organization).where(Organization.slug == slug)
-        )
+        result = await self.db.execute(select(Organization).where(Organization.slug == slug))
         return result.scalar_one_or_none()
 
     async def get_slugs_starting_with(self, base_slug: str) -> list[str]:

@@ -35,9 +35,7 @@ async def list_workspaces(
 async def create_workspace(
     data: WorkspaceCreate,
     org_id: UUID = Depends(get_current_org_id),
-    _role: None = Depends(
-        require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)
-    ),
+    _role: None = Depends(require_role(RoleEnum.owner, RoleEnum.admin, RoleEnum.member)),
     service: WorkspaceService = Depends(_get_service),
 ):
     """Create a new workspace (owner/admin/member)."""

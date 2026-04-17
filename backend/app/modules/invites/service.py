@@ -28,9 +28,7 @@ class InviteService:
         self.membership_repo = membership_repo
         self.db = db
 
-    async def create_invite(
-        self, org_id: UUID, inviter_id: UUID, data: InviteCreate
-    ) -> Invite:
+    async def create_invite(self, org_id: UUID, inviter_id: UUID, data: InviteCreate) -> Invite:
         """Create an invitation to join an organization.
 
         Generates a unique token for the invite link.
@@ -38,9 +36,7 @@ class InviteService:
         Raises:
             ConflictException: If a pending invite already exists for this email.
         """
-        existing = await self.invite_repo.get_pending_by_email_and_org(
-            data.email, org_id
-        )
+        existing = await self.invite_repo.get_pending_by_email_and_org(data.email, org_id)
         if existing:
             raise ConflictException("A pending invite already exists for this email")
 
@@ -78,11 +74,7 @@ class InviteService:
             raise ConflictException("You are already a member of this organization")
 
         # Create membership
-        role = (
-            RoleEnum(invite.role)
-            if invite.role in RoleEnum.__members__
-            else RoleEnum.member
-        )
+        role = RoleEnum(invite.role) if invite.role in RoleEnum.__members__ else RoleEnum.member
         membership = Membership(
             user_id=user_id,
             organization_id=invite.organization_id,
@@ -108,9 +100,7 @@ class InviteService:
             raise NotFoundException("Invite not found")
 
         if invite.status != InviteStatus.pending:
-            raise BadRequestException(
-                f"Cannot revoke an invite that is {invite.status.value}"
-            )
+            raise BadRequestException(f"Cannot revoke an invite that is {invite.status.value}")
 
         invite.status = InviteStatus.revoked
         return await self.invite_repo.update(invite)

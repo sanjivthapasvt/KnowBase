@@ -37,15 +37,10 @@ class DocumentRepository:
         )
         return list(result.scalars().all())
 
-    async def list_by_org(
-        self, org_id: UUID, *, skip: int = 0, limit: int = 100
-    ) -> list[Document]:
+    async def list_by_org(self, org_id: UUID, *, skip: int = 0, limit: int = 100) -> list[Document]:
         """List all documents across workspaces for an organization."""
         result = await self.db.execute(
-            select(Document)
-            .where(Document.organization_id == org_id)
-            .offset(skip)
-            .limit(limit)
+            select(Document).where(Document.organization_id == org_id).offset(skip).limit(limit)
         )
         return list(result.scalars().all())
 

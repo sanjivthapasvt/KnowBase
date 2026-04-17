@@ -36,11 +36,7 @@ class Invite(BaseDBModel, table=True):
     token: str = Field(unique=True, nullable=False, index=True, max_length=255)
     role: str = Field(default="member", max_length=20)
     status: InviteStatus = Field(
-        sa_column=Column(
-            Enum(InviteStatus), nullable=False, default=InviteStatus.pending
-        )
+        sa_column=Column(Enum(InviteStatus), nullable=False, default=InviteStatus.pending)
     )
-    organization_id: UUID = Field(
-        foreign_key="organizations.id", nullable=False, index=True
-    )
+    organization_id: UUID = Field(foreign_key="organizations.id", nullable=False, index=True)
     invited_by: UUID = Field(foreign_key="users.id", nullable=False)

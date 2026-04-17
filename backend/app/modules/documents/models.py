@@ -32,15 +32,11 @@ class Document(BaseDBModel, table=True):
 
     title: str = Field(max_length=500, nullable=False)
     status: DocumentStatus = Field(
-        sa_column=Column(
-            Enum(DocumentStatus), nullable=False, default=DocumentStatus.draft
-        )
+        sa_column=Column(Enum(DocumentStatus), nullable=False, default=DocumentStatus.draft)
     )
     current_version_id: UUID | None = Field(
         default=None, foreign_key="document_versions.id", nullable=True
     )
     workspace_id: UUID = Field(foreign_key="workspaces.id", nullable=False, index=True)
-    organization_id: UUID = Field(
-        foreign_key="organizations.id", nullable=False, index=True
-    )
+    organization_id: UUID = Field(foreign_key="organizations.id", nullable=False, index=True)
     created_by: UUID = Field(foreign_key="users.id", nullable=False)

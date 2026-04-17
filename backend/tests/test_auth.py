@@ -68,9 +68,7 @@ async def test_login_invalid_credentials(client: AsyncClient, test_user):
 
 
 @pytest.mark.asyncio
-async def test_get_current_user_authenticated(
-    client: AsyncClient, test_user, auth_headers
-):
+async def test_get_current_user_authenticated(client: AsyncClient, test_user, auth_headers):
     """Test that authenticated users can access their profile."""
     response = await client.get("/api/v1/users/me", headers=auth_headers)
     assert response.status_code == 200
