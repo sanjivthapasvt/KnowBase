@@ -1,1 +1,0 @@
-# KnowBase Application
