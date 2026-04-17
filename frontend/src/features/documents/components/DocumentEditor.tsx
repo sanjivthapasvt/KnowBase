@@ -22,6 +22,7 @@ export function DocumentEditor({ orgId, documentId }: Props) {
 
   useEffect(() => {
     if (doc && !initialized) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTitle(doc.title);
       setInitialized(true);
     }

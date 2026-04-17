@@ -6,7 +6,7 @@ import { MemberList } from '@/features/memberships/components/MemberList';
 import { InviteMemberModal } from '@/features/invites/components/InviteMemberModal';
 import { Button } from '@/shared/components/ui/Button';
 
-export default function MembersClient({ workspaceId }: { workspaceId: string }) {
+export default function MembersClient({}: { workspaceId: string }) {
   const searchParams = useSearchParams();
   const orgIdParam = searchParams.get('org_id');
   const activeOrgId = useWorkspaceStore((s) => s.activeOrgId);
